@@ -15,6 +15,7 @@ try:
     from test import support
 except ImportError:
     from test import test_support as support
+from test.support import os_helper
 
 
 class BaseTest(unittest.TestCase):
@@ -48,7 +49,7 @@ class BaseTest(unittest.TestCase):
     BAD_DATA = b'this is not a valid bzip2 file'
 
     def setUp(self):
-        self.filename = support.TESTFN
+        self.filename = os_helper.TESTFN
 
     def tearDown(self):
         if os.path.isfile(self.filename):
@@ -611,7 +612,7 @@ class OpenTest(BaseTest):
         modes = ["wb", "xb"] if bz2file._HAS_OPEN_X_MODE else ["wb"]
         for mode in modes:
             if mode == "xb":
-                support.unlink(self.filename)
+                os_helper.unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(self.TEXT)
             with open(self.filename, "rb") as f:
@@ -630,7 +631,7 @@ class OpenTest(BaseTest):
         modes = ["w", "x"] if bz2file._HAS_OPEN_X_MODE else ["w"]
         for mode in modes:
             if mode == "x":
-                support.unlink(self.filename)
+                os_helper.unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(self.TEXT)
             with open(self.filename, "rb") as f:
@@ -650,7 +651,7 @@ class OpenTest(BaseTest):
         modes = ["wt", "xt"] if bz2file._HAS_OPEN_X_MODE else ["wt"]
         for mode in modes:
             if mode == "xt":
-                support.unlink(self.filename)
+                os_helper.unlink(self.filename)
                 if not bz2file._HAS_OPEN_X_MODE:
                     continue
             with self.open(self.filename, mode) as f:
@@ -670,7 +671,7 @@ class OpenTest(BaseTest):
         if not bz2file._HAS_OPEN_X_MODE:
             return
         for mode in ("x", "xb", "xt"):
-            support.unlink(self.filename)
+            os_helper.unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 pass
             with self.assertRaises(FileExistsError):
